@@ -22,7 +22,11 @@ enum layers{
   NKRO,
   QWERTY,
   QWERTY_CAPS,
-  SYMBOL
+  SYMBOL,
+
+  QWERTY_MAC,
+  QWERTY_MAC_CAPS,
+  SYMBOL_MAC,
 };
 
 // Most/all of the combo events below are leftover from the Ecosteno code
@@ -74,15 +78,6 @@ enum combo_events {
   Q_ZERO_UPPER
 };
 
-const uint16_t PROGMEM Qwerty_A[] = {KC_Q, KC_Z, COMBO_END};
-const uint16_t PROGMEM Qwerty_S[] = {KC_W, KC_X, COMBO_END};
-const uint16_t PROGMEM Qwerty_D[] = {KC_E, KC_C, COMBO_END};
-const uint16_t PROGMEM Qwerty_F[] = {KC_R, KC_V, COMBO_END};
-const uint16_t PROGMEM Qwerty_G[] = {KC_T, KC_B, COMBO_END};
-const uint16_t PROGMEM Qwerty_H[] = {KC_Y, KC_N, COMBO_END};
-const uint16_t PROGMEM Qwerty_J[] = {KC_U, KC_M, COMBO_END};
-const uint16_t PROGMEM Qwerty_K[] = {KC_I, KC_COMM, COMBO_END};
-const uint16_t PROGMEM Qwerty_L[] = {KC_O, KC_DOT, COMBO_END};
 
 const uint16_t PROGMEM Qwerty_A_UPPER[] = {S(KC_Q), S(KC_Z), COMBO_END};
 const uint16_t PROGMEM Qwerty_S_UPPER[] = {S(KC_W), S(KC_X), COMBO_END};
@@ -469,6 +464,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, KC_EXLM,   KC_AT,   KC_LT,   KC_GT, KC_BSLS,   KC_DQT,    KC_PLUS,  KC_MINS, KC_SLASH, KC_ASTR,    KC_TAB,
     _______, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC,  KC_GRAVE,   KC_MINS,   KC_AMPR, KC_EQUAL,  KC_COMM,  KC_DOT, KC_RSFT,
                                 KC_LCTL, KC_SPACE, KC_ESC,   KC_ENTER, KC_SPACE, KC_RALT
+  ),
+
+  [QWERTY_MAC] = LAYOUT(
+    KC_TAB,              KC_Q,   KC_W,   KC_E,   KC_R,    KC_T,       KC_Y, KC_U, KC_I,    KC_O,      KC_P,     KC_BSPC,
+    KC_ESC,              KC_A,   KC_S,   KC_D,   KC_F,    KC_G,       KC_H, KC_J, KC_K,    KC_L,   KC_SCLN,     KC_QUOT,
+    MO(QWERTY_MAC_CAPS), KC_Z,   KC_X,   KC_C,   KC_V,    KC_B,       KC_N, KC_M, KC_COMM, KC_DOT, KC_SLASH, MO(QWERTY_MAC_CAPS),
+                                     KC_LCTL, KC_LALT, KC_LCMD,       KC_ENTER, KC_SPACE, MO(SYMBOL)
+  ),
+
+  [QWERTY_MAC_CAPS] = LAYOUT(
+    S(KC_TAB),  S(KC_Q), S(KC_W), S(KC_E), S(KC_R), S(KC_T),   S(KC_Y), S(KC_U),  S(KC_I),    S(KC_O),      S(KC_P), S(KC_BSPC),
+    TO(STENO),  S(KC_A), S(KC_S), S(KC_D), S(KC_F), S(KC_G),   S(KC_H), S(KC_J),  S(KC_K),    S(KC_L),   S(KC_SCLN), S(KC_QUOT),
+    MO(SYMBOL), S(KC_Z), S(KC_X), S(KC_C), S(KC_V), S(KC_B),   S(KC_N), S(KC_M),  S(KC_COMM), S(KC_DOT), S(KC_SLASH), KC_RSFT,
+                                  KC_LCTL, KC_SPACE, KC_ESC,   KC_ENTER, KC_SPACE, KC_RALT 
+  ),
+
+  [SYMBOL_MAC] = LAYOUT(
+    TO(STENO),  KC_1,    KC_2,    KC_3,    KC_4,      KC_5,      KC_6,       KC_7,    KC_8,    KC_9,    KC_0,    KC_ASTR,
+    _______,    KC_EXLM, KC_AT,   KC_LT,   KC_GT,     KC_BSLS,   _______,    KC_PLUS, KC_MINS, KC_LCBR, KC_RCBR, KC_DQT,
+    KC_LSFT,    KC_PERC, KC_CIRC, _______, _______,   KC_GRAVE,   KC_MINS,   KC_AMPR, KC_EQUAL,  KC_LBRC, KC_RBRC, KC_RSFT,
+                                KC_LCTL, KC_SPACE, KC_ESC,   KC_ENTER, KC_SPACE, _______
   )
 };
 
