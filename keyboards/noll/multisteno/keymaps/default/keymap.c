@@ -17,7 +17,7 @@
 #include "keymap_steno.h"
 #include QMK_KEYBOARD_H
 
-enum layers{
+enum layers {
   STENO,
   NKRO,
   QWERTY,
@@ -27,6 +27,7 @@ enum layers{
   QWERTY_MAC,
   QWERTY_MAC_CAPS,
   SYMBOL_MAC,
+  SYMBOL_PROG,
 };
 
 // Most/all of the combo events below are leftover from the Ecosteno code
@@ -75,9 +76,19 @@ enum combo_events {
   Q_SEVEN_UPPER,
   Q_EIGHT_UPPER,
   Q_NINE_UPPER,
-  Q_ZERO_UPPER
+  Q_ZERO_UPPER,
+  S_QWERTY_MAC,
 };
 
+const uint16_t PROGMEM Qwerty_A[] = {KC_Q, KC_Z, COMBO_END};
+const uint16_t PROGMEM Qwerty_S[] = {KC_W, KC_X, COMBO_END};
+const uint16_t PROGMEM Qwerty_D[] = {KC_E, KC_C, COMBO_END};
+const uint16_t PROGMEM Qwerty_F[] = {KC_R, KC_V, COMBO_END};
+const uint16_t PROGMEM Qwerty_G[] = {KC_T, KC_B, COMBO_END};
+const uint16_t PROGMEM Qwerty_H[] = {KC_Y, KC_N, COMBO_END};
+const uint16_t PROGMEM Qwerty_J[] = {KC_U, KC_M, COMBO_END};
+const uint16_t PROGMEM Qwerty_K[] = {KC_I, KC_COMM, COMBO_END};
+const uint16_t PROGMEM Qwerty_L[] = {KC_O, KC_DOT, COMBO_END};
 
 const uint16_t PROGMEM Qwerty_A_UPPER[] = {S(KC_Q), S(KC_Z), COMBO_END};
 const uint16_t PROGMEM Qwerty_S_UPPER[] = {S(KC_W), S(KC_X), COMBO_END};
@@ -113,8 +124,10 @@ const uint16_t PROGMEM Qwerty_EIGHT_UPPER[] = {S(KC_I), S(KC_ENTER), COMBO_END};
 const uint16_t PROGMEM Qwerty_NINE_UPPER[]  = {S(KC_O), S(KC_BSPC), COMBO_END};
 const uint16_t PROGMEM Qwerty_ZERO_UPPER[]  = {S(KC_P), S(KC_BSPC), COMBO_END};
 
+const uint16_t PROGMEM Steno_Qwerty_Mac[]  = {STN_RES1, STN_NC, STN_E, COMBO_END};
 
-combo_t key_combos[COMBO_COUNT] = {
+
+combo_t key_combos[] = {
   [Q_A] = COMBO_ACTION(Qwerty_A),
   [Q_S] = COMBO_ACTION(Qwerty_S),
   [Q_D] = COMBO_ACTION(Qwerty_D),
@@ -155,12 +168,23 @@ combo_t key_combos[COMBO_COUNT] = {
   [Q_SEVEN_UPPER] = COMBO_ACTION(Qwerty_SEVEN_UPPER),
   [Q_EIGHT_UPPER] = COMBO_ACTION(Qwerty_EIGHT_UPPER),
   [Q_NINE_UPPER]  = COMBO_ACTION(Qwerty_NINE_UPPER),
-  [Q_ZERO_UPPER]  = COMBO_ACTION(Qwerty_ZERO_UPPER)
+  [Q_ZERO_UPPER]  = COMBO_ACTION(Qwerty_ZERO_UPPER),
+
+  [S_QWERTY_MAC] = COMBO_ACTION(Steno_Qwerty_Mac),
 };
 
 void process_combo_event(uint16_t combo_index, bool pressed){
   if(pressed){
     switch(combo_index) {
+      case S_QWERTY_MAC:
+        if (IS_LAYER_ON(STENO)){
+          tap_code16(S(KC_A));
+          layer_move(QWERTY_MAC);
+
+          palSetPad(GPIOA, 0);
+          palClearPad(GPIOA, 1);
+        }
+        break;
       case Q_A_UPPER:
         if (IS_LAYER_ON(QWERTY_CAPS)){
           tap_code16(S(KC_A));
@@ -431,7 +455,7 @@ void process_combo_event(uint16_t combo_index, bool pressed){
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-    [STENO] = LAYOUT(
+  [STENO] = LAYOUT(
     STN_RES1,   STN_N1, STN_N2, STN_N3, STN_N4,  STN_N5,   STN_N6,  STN_N7, STN_N8, STN_N9, STN_NA, STN_FN,      
     TO(NKRO),   STN_S1, STN_TL, STN_PL, STN_HL, STN_ST1,   STN_ST3, STN_FR, STN_PR, STN_LR, STN_TR, STN_DR,
     MO(SYMBOL), STN_S2, STN_KL, STN_WL, STN_RL, STN_ST2,   STN_ST4, STN_RR, STN_BR, STN_GR, STN_SR, STN_ZR,
@@ -467,25 +491,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [QWERTY_MAC] = LAYOUT(
-    KC_TAB,              KC_Q,   KC_W,   KC_E,   KC_R,    KC_T,       KC_Y, KC_U, KC_I,    KC_O,      KC_P,     KC_BSPC,
-    KC_ESC,              KC_A,   KC_S,   KC_D,   KC_F,    KC_G,       KC_H, KC_J, KC_K,    KC_L,   KC_SCLN,     KC_QUOT,
-    MO(QWERTY_MAC_CAPS), KC_Z,   KC_X,   KC_C,   KC_V,    KC_B,       KC_N, KC_M, KC_COMM, KC_DOT, KC_SLASH, MO(QWERTY_MAC_CAPS),
-                                     KC_LCTL, KC_LALT, KC_LCMD,       KC_ENTER, KC_SPACE, MO(SYMBOL)
+    KC_ESC,                  KC_Q,   KC_W,   KC_E,   KC_R,    KC_T,       KC_Y, KC_U, KC_I,    KC_O,      KC_P,  KC_BSPC,
+    LT(SYMBOL_PROG, KC_TAB), KC_A,   KC_S,   KC_D,   KC_F,    KC_G,       KC_H, KC_J, KC_K,    KC_L,   KC_SCLN,  LT(SYMBOL_PROG, KC_QUOT),
+    MO(QWERTY_MAC_CAPS),     KC_Z,   KC_X,   KC_C,   KC_V,    KC_B,       KC_N, KC_M, KC_COMM, KC_DOT, KC_SLASH, MO(QWERTY_MAC_CAPS),
+                                         KC_LCTL, KC_LALT, KC_LCMD,       KC_ENTER, KC_SPACE, MO(SYMBOL_MAC)
   ),
 
   [QWERTY_MAC_CAPS] = LAYOUT(
     S(KC_TAB),  S(KC_Q), S(KC_W), S(KC_E), S(KC_R), S(KC_T),   S(KC_Y), S(KC_U),  S(KC_I),    S(KC_O),      S(KC_P), S(KC_BSPC),
-    TO(STENO),  S(KC_A), S(KC_S), S(KC_D), S(KC_F), S(KC_G),   S(KC_H), S(KC_J),  S(KC_K),    S(KC_L),   S(KC_SCLN), S(KC_QUOT),
-    MO(SYMBOL), S(KC_Z), S(KC_X), S(KC_C), S(KC_V), S(KC_B),   S(KC_N), S(KC_M),  S(KC_COMM), S(KC_DOT), S(KC_SLASH), KC_RSFT,
+    _______,    S(KC_A), S(KC_S), S(KC_D), S(KC_F), S(KC_G),   S(KC_H), S(KC_J),  S(KC_K),    S(KC_L),   S(KC_SCLN), S(KC_QUOT),
+    _______,    S(KC_Z), S(KC_X), S(KC_C), S(KC_V), S(KC_B),   S(KC_N), S(KC_M),  KC_LT,      KC_GT,     KC_QUES,    KC_UNDS,
                                   KC_LCTL, KC_SPACE, KC_ESC,   KC_ENTER, KC_SPACE, KC_RALT 
   ),
 
   [SYMBOL_MAC] = LAYOUT(
     TO(STENO),  KC_1,    KC_2,    KC_3,    KC_4,      KC_5,      KC_6,       KC_7,    KC_8,    KC_9,    KC_0,    KC_ASTR,
-    _______,    KC_EXLM, KC_AT,   KC_LT,   KC_GT,     KC_BSLS,   _______,    KC_PLUS, KC_MINS, KC_LCBR, KC_RCBR, KC_DQT,
-    KC_LSFT,    KC_PERC, KC_CIRC, _______, _______,   KC_GRAVE,   KC_MINS,   KC_AMPR, KC_EQUAL,  KC_LBRC, KC_RBRC, KC_RSFT,
+    _______,    KC_EXLM, KC_AT,   KC_HASH, KC_DLR,    KC_BSLS,   _______,    KC_PLUS, KC_MINS, KC_LCBR, KC_RCBR, KC_GRAVE,
+    KC_LSFT,    KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR,   KC_GRAVE,   KC_MINS,   KC_UNDS, KC_EQUAL,  KC_LBRC, KC_RBRC, KC_RSFT,
                                 KC_LCTL, KC_SPACE, KC_ESC,   KC_ENTER, KC_SPACE, _______
-  )
+  ),
+
+  [SYMBOL_PROG] = LAYOUT(
+    _______,    KC_1,    KC_2,    KC_3,    KC_4,          KC_5,      KC_6,       KC_LPRN, KC_RPRN, KC_LCBR,   KC_RCBR,  KC_ASTR,
+    _______,    KC_EXLM, KC_AT,   KC_LT,   KC_GT,      KC_BSLS,      KC_LEFT,    KC_DOWN, KC_UP,   KC_RIGHT,  KC_EQUAL, KC_UNDS,
+    KC_LSFT,    KC_PERC, KC_CIRC, KC_LPRN, KC_RPRN,   KC_GRAVE,      KC_MINS,    KC_LCBR, KC_RCBR,  KC_LBRC, KC_RBRC,  KC_RSFT,
+                                     KC_LCTL, KC_SPACE, KC_ESC,      KC_ENTER, KC_SPACE, _______
+  ),
 };
 
 void matrix_init_user(void) {
@@ -500,6 +531,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     // or uint8_t layer = get_highest_layer(state);
     switch (get_highest_layer(state)) {
         case (STENO):
+          combo_enable();
           //green LED on
           palSetPad(GPIOA, 1);
           // red LED off

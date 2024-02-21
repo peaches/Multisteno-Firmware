@@ -16,8 +16,6 @@
 
 #pragma once
 
-#include "config_common.h"
-
 /* key matrix size */
 #define MATRIX_ROWS 4
 #define MATRIX_COLS 12
@@ -35,7 +33,6 @@
 /* Locking resynchronize hack */
 #define LOCKING_RESYNC_ENABLE
 
-#define COMBO_COUNT 40 // 42 with uppers, 21 without
 #define TAPPING_TERM 137
 #define COMBO_TERM 35
 #define FORCE_NKRO
