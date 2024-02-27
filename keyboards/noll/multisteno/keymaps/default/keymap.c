@@ -178,11 +178,7 @@ void process_combo_event(uint16_t combo_index, bool pressed){
     switch(combo_index) {
       case S_QWERTY_MAC:
         if (IS_LAYER_ON(STENO)){
-          tap_code16(S(KC_A));
           layer_move(QWERTY_MAC);
-
-          palSetPad(GPIOA, 0);
-          palClearPad(GPIOA, 1);
         }
         break;
       case Q_A_UPPER:
@@ -485,37 +481,37 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [SYMBOL] = LAYOUT(
     KC_TAB,     KC_1,    KC_2,    KC_3,    KC_4,      KC_5,   KC_6,        KC_7,      KC_8,     KC_9,    KC_0,   KC_SCLN,
-    _______, KC_EXLM,   KC_AT,   KC_LT,   KC_GT, KC_BSLS,   KC_DQT,    KC_PLUS,  KC_MINS, KC_SLASH, KC_ASTR,    KC_TAB,
+    _______, KC_EXLM,   KC_AT,   KC_LT,   KC_GT, KC_BSLS,   _______,    KC_PLUS,  KC_MINS, KC_SLASH, KC_ASTR,    KC_TAB,
     _______, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC,  KC_GRAVE,   KC_MINS,   KC_AMPR, KC_EQUAL,  KC_COMM,  KC_DOT, KC_RSFT,
                                 KC_LCTL, KC_SPACE, KC_ESC,   KC_ENTER, KC_SPACE, KC_RALT
   ),
 
   [QWERTY_MAC] = LAYOUT(
-    KC_ESC,                  KC_Q,   KC_W,   KC_E,   KC_R,    KC_T,       KC_Y, KC_U, KC_I,    KC_O,      KC_P,  KC_BSPC,
-    LT(SYMBOL_PROG, KC_TAB), KC_A,   KC_S,   KC_D,   KC_F,    KC_G,       KC_H, KC_J, KC_K,    KC_L,   KC_SCLN,  LT(SYMBOL_PROG, KC_QUOT),
+    KC_TAB,                  KC_Q,   KC_W,   KC_E,   KC_R,    KC_T,       KC_Y, KC_U, KC_I,    KC_O,      KC_P,  KC_BSPC,
+    LT(SYMBOL_PROG, KC_ESC), KC_A,   KC_S,   KC_D,   KC_F,    KC_G,       KC_H, KC_J, KC_K,    KC_L,   KC_SCLN,  LT(SYMBOL_PROG, KC_QUOT),
     MO(QWERTY_MAC_CAPS),     KC_Z,   KC_X,   KC_C,   KC_V,    KC_B,       KC_N, KC_M, KC_COMM, KC_DOT, KC_SLASH, MO(QWERTY_MAC_CAPS),
                                          KC_LCTL, KC_LALT, KC_LCMD,       KC_ENTER, KC_SPACE, MO(SYMBOL_MAC)
   ),
 
   [QWERTY_MAC_CAPS] = LAYOUT(
-    S(KC_TAB),  S(KC_Q), S(KC_W), S(KC_E), S(KC_R), S(KC_T),   S(KC_Y), S(KC_U),  S(KC_I),    S(KC_O),      S(KC_P), S(KC_BSPC),
-    _______,    S(KC_A), S(KC_S), S(KC_D), S(KC_F), S(KC_G),   S(KC_H), S(KC_J),  S(KC_K),    S(KC_L),   S(KC_SCLN), S(KC_QUOT),
-    _______,    S(KC_Z), S(KC_X), S(KC_C), S(KC_V), S(KC_B),   S(KC_N), S(KC_M),  KC_LT,      KC_GT,     KC_QUES,    KC_UNDS,
-                                  KC_LCTL, KC_SPACE, KC_ESC,   KC_ENTER, KC_SPACE, KC_RALT 
+    S(KC_TAB), S(KC_Q), S(KC_W), S(KC_E), S(KC_R), S(KC_T),     S(KC_Y), S(KC_U),  S(KC_I),    S(KC_O),      S(KC_P), S(KC_BSPC),
+    _______,   S(KC_A), S(KC_S), S(KC_D), S(KC_F), S(KC_G),     S(KC_H), S(KC_J),  S(KC_K),    S(KC_L),   S(KC_SCLN), S(KC_QUOT),
+    KC_LSFT,   S(KC_Z), S(KC_X), S(KC_C), S(KC_V), S(KC_B),     S(KC_N), S(KC_M),  KC_LT,      KC_GT,     KC_QUES,    KC_RSFT,
+                                 KC_LCTL, KC_LALT, KC_LCMD,     KC_ENTER, KC_SPACE, MO(SYMBOL_MAC)
   ),
 
   [SYMBOL_MAC] = LAYOUT(
-    TO(STENO),  KC_1,    KC_2,    KC_3,    KC_4,      KC_5,      KC_6,       KC_7,    KC_8,    KC_9,    KC_0,    KC_ASTR,
-    _______,    KC_EXLM, KC_AT,   KC_HASH, KC_DLR,    KC_BSLS,   _______,    KC_PLUS, KC_MINS, KC_LCBR, KC_RCBR, KC_GRAVE,
-    KC_LSFT,    KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR,   KC_GRAVE,   KC_MINS,   KC_UNDS, KC_EQUAL,  KC_LBRC, KC_RBRC, KC_RSFT,
-                                KC_LCTL, KC_SPACE, KC_ESC,   KC_ENTER, KC_SPACE, _______
+    KC_GRAVE,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,        KC_6,     KC_7,     KC_8,    KC_9,       KC_0,              KC_BSPC,
+    TO(STENO), KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,     KC_CIRC,  KC_AMPR,  KC_ASTR, KC_KB_MUTE, KC_KB_VOLUME_DOWN, KC_KB_VOLUME_UP,
+    KC_LSFT,   _______, _______, _______, _______, _______,     _______,  _______,  _______, _______,    _______,           KC_RSFT,
+                                KC_LCTL, KC_LALT, KC_LCMD,      KC_ENTER, KC_SPACE, _______
   ),
 
   [SYMBOL_PROG] = LAYOUT(
-    _______,    KC_1,    KC_2,    KC_3,    KC_4,          KC_5,      KC_6,       KC_LPRN, KC_RPRN, KC_LCBR,   KC_RCBR,  KC_ASTR,
-    _______,    KC_EXLM, KC_AT,   KC_LT,   KC_GT,      KC_BSLS,      KC_LEFT,    KC_DOWN, KC_UP,   KC_RIGHT,  KC_EQUAL, KC_UNDS,
-    KC_LSFT,    KC_PERC, KC_CIRC, KC_LPRN, KC_RPRN,   KC_GRAVE,      KC_MINS,    KC_LCBR, KC_RCBR,  KC_LBRC, KC_RBRC,  KC_RSFT,
-                                     KC_LCTL, KC_SPACE, KC_ESC,      KC_ENTER, KC_SPACE, _______
+    KC_GRAVE, KC_1,    KC_2,    KC_3,    KC_4,    _______,      KC_PLUS,  KC_LPRN,  KC_RPRN, KC_LCBR,  KC_RCBR,  KC_BSPC,
+    _______,  _______, _______, _______, _______, KC_BSLS,      KC_LEFT,  KC_DOWN,  KC_UP,   KC_RIGHT, KC_EQUAL, KC_UNDS,
+    KC_LSFT,  _______, _______, _______, _______, KC_PIPE,      KC_MINS,  KC_LCBR,  KC_RCBR, KC_LBRC,  _______,  KC_RSFT,
+                                KC_LCTL, KC_LALT, KC_LCMD,      KC_ENTER, KC_SPACE, TO(STENO)
   ),
 };
 
@@ -538,6 +534,10 @@ layer_state_t layer_state_set_user(layer_state_t state) {
           palClearPad(GPIOA, 0);
           break;
         case (QWERTY):
+        case (QWERTY_MAC):
+        case (QWERTY_MAC_CAPS):
+        case (SYMBOL_MAC):
+        case (SYMBOL_PROG):
           combo_enable();
           // red LED on
           palSetPad(GPIOA, 0);
